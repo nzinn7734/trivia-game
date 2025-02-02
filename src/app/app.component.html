@@ -1,17 +1,19 @@
-
-<p>{{ test }}</p>
-<ng-container *ngIf="response$ | async as data">
+<ng-container *ngIf="response$ | async as data;">
     <p>{{ data| json }}</p>
-
     <p>Parsed data</p>
     <p>{{ data.response_code }}</p>
+
     <ng-container *ngFor="let results of data.results">
-        <p>type: {{results.type}}</p>
-        <p>question: {{ results.question }}</p>
-        <p>correct_answer: {{ results.correct_answer }}</p>
-        <ng-container *ngFor="let answer of results.incorrect_answers">
-            <p>incorrect_answers: {{ answer }}</p>
-        </ng-container>
+        <mat-grid-list cols="2">
+            <mat-grid-tile [colspan]="2">
+                <p>Type: {{results.type}}</p>
+                <p>Question: {{ results.question }}</p>
+            </mat-grid-tile>
+            <p>correct_answer: {{ results.correct_answer }}</p>
+            <ng-container *ngFor="let answer of results.incorrect_answers">
+                <p>incorrect_answers: {{ answer }}</p>
+            </ng-container>
+        </mat-grid-list>
     </ng-container>
 </ng-container>
 
