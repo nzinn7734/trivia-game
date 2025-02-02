@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { QuestionService } from './Services/question.service';
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { MatGridListModule } from '@angular/material/grid-list'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { TriviaResponse } from './Models/trivia-response'
@@ -14,8 +14,7 @@ import { TriviaResponse } from './Models/trivia-response'
   providers: [QuestionService]
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'Trivia Game';
-  response$: Observable<any> | undefined
+  subscriptions: Subscription[] = [];
   triviaResponse = {} as TriviaResponse;
   loading = true;
   constructor(private questionService: QuestionService) {}
@@ -25,16 +24,20 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    
+    this.subscriptions.forEach(subscription => {
+      if(!subscription.closed) {
+        subscription.unsubscribe();
+      }
+    })
   }
 
   public newQuestion() {
-    this.response$ = this.questionService.getQuestions();
-    this.response$.subscribe(data => {
-      this.triviaResponse = { ...data }
-      console.log(this.triviaResponse);
-      this.loading = false
-    })
+    this.subscriptions.push(
+      this.questionService.getQuestions().subscribe(data => {
+        this.triviaResponse = { ...data }
+        console.log(this.triviaResponse);
+        this.loading = false
+    }))
   }
 
 }
