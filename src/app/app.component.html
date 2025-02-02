@@ -1,12 +1,33 @@
 <ng-container *ngIf="!loading;">
-    <p>Data mapped to interface</p>
-    <p> {{ triviaResponse.response_code }} </p>
-    
+    <ng-container *ngFor="let question of triviaResponse.results">
+        <mat-grid-list cols="2" rowHeight="2:1">
+            <mat-grid-tile style="text-align: center;" colspan ="2">
+                Type: {{ question.type }} <br>
+                Difficulty: {{ question.difficulty }} <br>
+                Question: {{ question.question }}
+            </mat-grid-tile>
+            <mat-grid-tile (click)="checkCorrectAnswer()" class="change-on-hover" colspan ="1">
+                {{ question.correct_answer }}
+            </mat-grid-tile>
+            <mat-grid-tile (click)="checkCorrectAnswer()" class="change-on-hover" colspan ="1">
+                {{ question.incorrect_answers[0] }}
+            </mat-grid-tile>
+            <mat-grid-tile (click)="checkCorrectAnswer()" class="change-on-hover" colspan ="1">
+                {{ question.incorrect_answers[1] }}
+            </mat-grid-tile>
+            <mat-grid-tile (click)="checkCorrectAnswer()" class="change-on-hover" colspan ="1">
+                {{ question.incorrect_answers[2] }}
+            </mat-grid-tile>
+        </mat-grid-list>
+    </ng-container>
 </ng-container>
 <ng-container *ngIf="loading;">
-    <mat-spinner></mat-spinner>
+    <div style="text-align: center;">
+        <mat-spinner></mat-spinner>
+    </div>
 </ng-container>
-
-<button (click)="newQuestion()">New Question</button>
+<div style="text-align: center;">
+    <button (click)="newQuestion()">New Questions</button>
+</div>
 
 

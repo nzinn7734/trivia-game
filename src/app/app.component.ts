@@ -31,6 +31,10 @@ export class AppComponent implements OnInit, OnDestroy {
     })
   }
 
+  public checkCorrectAnswer() {
+    console.log("check correct called");
+  }
+
   public newQuestion() {
     this.subscriptions.push(
       this.questionService.getQuestions().subscribe(data => {
