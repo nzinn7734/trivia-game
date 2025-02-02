@@ -1,14 +1,12 @@
 <ng-container *ngIf="response$ | async as data;">
-    <p>{{ data| json }}</p>
+    <p>{{ data | json }}</p>
     <p>Parsed data</p>
     <p>{{ data.response_code }}</p>
 
     <ng-container *ngFor="let results of data.results">
         <mat-grid-list cols="2">
-            <mat-grid-tile [colspan]="2">
-                <p>Type: {{results.type}}</p>
-                <p>Question: {{ results.question }}</p>
-            </mat-grid-tile>
+            <p>Type: {{results.type}}</p>
+            <p>Question: {{ results.question }}</p>
             <p>correct_answer: {{ results.correct_answer }}</p>
             <ng-container *ngFor="let answer of results.incorrect_answers">
                 <p>incorrect_answers: {{ answer }}</p>
