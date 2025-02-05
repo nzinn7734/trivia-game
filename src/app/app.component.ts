@@ -35,17 +35,20 @@ export class AppComponent implements OnInit, OnDestroy {
     })
   }
 
-  public checkCorrectAnswer(answer: Answer) {
+  public checkCorrectAnswer(question: Question, answer: Answer) {
     console.log("check correct called");
     console.log("correct answer selected: " + answer.isCorrect);
-    if(answer.isCorrect) {
+    
+    if(!question.answered && answer.isCorrect) {
       this.correctAnswers += 1;
       answer.color = "lightgreen";
       answer.isSelected = true;
-    } else {
+    } else if (!question.answered) {
       answer.color = "lightcoral";
       answer.isSelected = true;
     }
+
+    question.answered = true;
   }
 
   public mouseEnter(answer: Answer) {
@@ -63,8 +66,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public newQuestions() {
     this.isLoading = true;
     this.questions = [];
-    this.subscriptions.push(this.questionService.getQuestions().pipe(take(1))
-                                .subscribe((response) => this.mapToQuestions(response)));
+    this.subscriptions.push(this.questionService.getQuestions().pipe(take(1)).subscribe((response) => this.mapToQuestions(response)));
   }
 
   private mapToQuestions(response: TriviaResponse) {

@@ -5,6 +5,7 @@ export class Question {
     difficulty: string
     category: string
     question: string
+    answered: boolean
     answers: Answer[]
 
     constructor(type: string, difficulty: string, category: string, question: string, answers: Answer[]){
@@ -12,6 +13,7 @@ export class Question {
         this.difficulty = difficulty;
         this.category = category;
         this.question = question;
+        this.answered = false;
         this.answers = answers;
     }
 }

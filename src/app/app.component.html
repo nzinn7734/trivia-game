@@ -10,7 +10,7 @@
                 Question: {{ question.question }}
             </mat-grid-tile>
             <ng-container *ngFor="let answer of question.answers">
-                <mat-grid-tile (click)="checkCorrectAnswer(answer)" 
+                <mat-grid-tile (click)="checkCorrectAnswer(question, answer)" 
                     (mouseenter)="mouseEnter(answer)" 
                     (mouseleave)="mouseLeave(answer)" 
                     [style.background-color]="answer.color" 
