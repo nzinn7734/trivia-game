@@ -12,7 +12,7 @@ export class QuestionService {
 
   triviaResponse: TriviaResponse | undefined;
 
-  getQuestions(): Observable<any> {
-    return this.http.get("https://opentdb.com/api.php?amount=4").pipe(first());
+  getQuestions(): Observable<TriviaResponse> {
+    return this.http.get<TriviaResponse>("https://opentdb.com/api.php?amount=4");
   }
 }
