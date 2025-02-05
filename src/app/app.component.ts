@@ -21,6 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = []
   isLoading = true;
   questions: Question[] = [];
+  correctAnswers: number = 0;
   constructor(private questionService: QuestionService) {}
 
   ngOnInit(): void {
@@ -36,11 +37,17 @@ export class AppComponent implements OnInit, OnDestroy {
     })
   }
 
-  public checkCorrectAnswer() {
+  public checkCorrectAnswer(isCorrect: boolean) {
     console.log("check correct called");
+    console.log("correct answer selected: " + isCorrect);
+    if(isCorrect) {
+      this.correctAnswers += 1;
+    }
   }
 
   public newQuestions() {
+    this.isLoading = true;
+    this.questions = [];
     this.subscriptions.push(this.questionService.getQuestions().pipe(take(1))
                                 .subscribe((response) => this.mapToQuestions(response)));
   }
@@ -58,7 +65,15 @@ export class AppComponent implements OnInit, OnDestroy {
     incorrectAnswers.forEach((answer) => {
       answers.push(new Answer(false, answer));
     })
+    this.shuffel(answers);
     return answers;
+  }
+
+  private shuffel(array: any) {
+    for (let i = array.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
   }
 
 }

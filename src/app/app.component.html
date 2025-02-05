@@ -1,3 +1,6 @@
+<div style="text-align: center;">
+    Questions answered correctly: {{ correctAnswers }}
+</div>
 <div *ngIf="!isLoading; else loading">
     <ng-container *ngFor="let question of questions">
         <mat-grid-list cols="2" rowHeight="2:1">
@@ -7,7 +10,7 @@
                 Question: {{ question.question }}
             </mat-grid-tile>
             <ng-container *ngFor="let answer of question.answers">
-                <mat-grid-tile (click)="checkCorrectAnswer()" class="change-on-hover" colspan ="1">
+                <mat-grid-tile (click)="checkCorrectAnswer(answer.isCorrect)" class="change-on-hover" colspan ="1">
                     {{ answer.answer }}
                  </mat-grid-tile>
             </ng-container>
