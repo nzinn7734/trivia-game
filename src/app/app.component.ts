@@ -6,7 +6,6 @@ import { MatGridListModule } from '@angular/material/grid-list'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { TriviaResponse } from './Models/trivia-response'
 import { Question } from './Models/question';
-import { Result } from './Models/result';
 import { Answer } from './Models/answer';
 
 @Component({
@@ -17,7 +16,6 @@ import { Answer } from './Models/answer';
   providers: [QuestionService]
 })
 export class AppComponent implements OnInit, OnDestroy {
-  triviaResponse$: Observable<TriviaResponse> | undefined;
   subscriptions: Subscription[] = []
   isLoading = true;
   questions: Question[] = [];
@@ -37,11 +35,28 @@ export class AppComponent implements OnInit, OnDestroy {
     })
   }
 
-  public checkCorrectAnswer(isCorrect: boolean) {
+  public checkCorrectAnswer(answer: Answer) {
     console.log("check correct called");
-    console.log("correct answer selected: " + isCorrect);
-    if(isCorrect) {
+    console.log("correct answer selected: " + answer.isCorrect);
+    if(answer.isCorrect) {
       this.correctAnswers += 1;
+      answer.color = "lightgreen";
+      answer.isSelected = true;
+    } else {
+      answer.color = "lightcoral";
+      answer.isSelected = true;
+    }
+  }
+
+  public mouseEnter(answer: Answer) {
+    if(!answer.isSelected) {
+      answer.color = "lightblue";
+    }
+  }
+
+  public mouseLeave(answer: Answer) {
+    if(!answer.isSelected) {
+      answer.color = "white";
     }
   }
 
