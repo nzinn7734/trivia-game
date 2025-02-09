@@ -1,17 +1,20 @@
+<app-header></app-header>
 <div style="text-align: center;">
     Questions answered correctly: {{ correctAnswers }}
 </div>
 <div *ngIf="!isLoading; else loading">
     <ng-container *ngFor="let question of questions">
         <mat-grid-list cols="2" rowHeight="3:1">
-            <mat-grid-tile class="text-center" colspan ="2" >
-                <div>
-                <p>Type: <span [innerHtml] = "question.type | safeHtml"></span></p>
-                <p>Difficulty: <span [innerHtml] = "question.difficulty | safeHtml"></span></p>
-                <p>Category: <span [innerHtml] = "question.category | safeHtml"></span></p>
-                <p>Question: <span [innerHtml] = "question.question | safeHtml"></span></p>
-                </div>
-            </mat-grid-tile>
+            <ng-container>
+                <mat-grid-tile class="slight-border text-center" colspan ="2" >
+                    <div>
+                        <!-- <p>Type: <span [innerHtml] = "question.type | safeHtml"></span></p>
+                        <p>Difficulty: <span [innerHtml] = "question.difficulty | safeHtml"></span></p>
+                        <p>Category: <span [innerHtml] = "question.category | safeHtml"></span></p> -->
+                        <p><span [innerHtml] = "question.question | safeHtml"></span></p>
+                    </div>
+                </mat-grid-tile>
+            </ng-container>
             <ng-container *ngFor="let answer of question.answers">
                 <mat-grid-tile class="slight-border text-center" 
                     (click)="checkCorrectAnswer(question, answer)" 

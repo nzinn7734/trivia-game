@@ -8,10 +8,11 @@ import { TriviaResponse } from './Models/trivia-response'
 import { Question } from './Models/question';
 import { Answer } from './Models/answer';
 import { SafeHtmlPipe } from './Pipes/safe-html.pipe';
+import { HeaderComponent } from './header/header.component';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, MatGridListModule, MatProgressSpinnerModule, SafeHtmlPipe],
+  imports: [CommonModule, MatGridListModule, MatProgressSpinnerModule, SafeHtmlPipe, HeaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [QuestionService]
