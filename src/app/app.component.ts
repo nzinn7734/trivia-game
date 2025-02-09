@@ -4,15 +4,17 @@ import { QuestionService } from './Services/question.service';
 import { Subscription, take } from 'rxjs';
 import { MatGridListModule } from '@angular/material/grid-list'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
+import { SafeHtmlPipe } from './Pipes/safe-html.pipe';
+
 import { TriviaResponse } from './Models/trivia-response'
 import { Question } from './Models/question';
 import { Answer } from './Models/answer';
-import { SafeHtmlPipe } from './Pipes/safe-html.pipe';
 import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, MatGridListModule, MatProgressSpinnerModule, SafeHtmlPipe, HeaderComponent],
+  imports: [CommonModule, MatGridListModule, MatProgressSpinnerModule, SafeHtmlPipe, HeaderComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [QuestionService]
