@@ -1,36 +1,42 @@
-<app-header></app-header>
-<div class="container" style="text-align: center;">
-    Questions answered correctly: {{ correctAnswers }}
-</div>
-<div *ngIf="!isLoading; else loading">
-    <main class="container">
-        <ng-container *ngFor="let question of questions">
-            <div style="text-align: center;">
-                <p>Type: <span [innerHtml] = "question.type | safeHtml"></span></p>
-                <p>Difficulty: <span [innerHtml] = "question.difficulty | safeHtml"></span></p>
-                <p>Category: <span [innerHtml] = "question.category | safeHtml"></span></p>
-                <p><span [innerHtml] = "question.question | safeHtml"></span></p>
-            </div>   
-            <ng-container *ngFor="let answer of question.answers">
-                <div class="grid">
-                    <button class="outline"
-                    (click)="checkCorrectAnswer(question, answer)" 
-                    [style.background-color]="answer.color">
-                    <span [innerHtml] = "answer.answer | safeHtml"></span>
-                    </button>
-                </div>
-            </ng-container>
-        </ng-container>    
-    </main>
-</div>
-<div style="text-align: center;">
-    <button class="outline" (click)="newQuestions()">
-        New Questions
-    </button>
-</div>
-<ng-template #loading>
-    <mat-spinner style="margin: auto;"></mat-spinner>
-</ng-template>
-<app-footer></app-footer>
+<article data-theme="dark">
+    <app-header></app-header>
+    <div class="container" style="text-align: center;">
+        Questions answered correctly: {{ correctAnswers }}
+    </div>
+    <div *ngIf="!isLoading; else loading">
+        <main class="container">
+            <ng-container *ngFor="let question of questions; index as i">
+                <div style="text-align: center;" class="questions">
+                    <p>Question: {{ i+1 }}</p>
+                    <p>Type: <span [innerHtml] = "question.type | safeHtml"></span></p>
+                    <p>Difficulty: <span [innerHtml] = "question.difficulty | safeHtml"></span></p>
+                    <p>Category: <span [innerHtml] = "question.category | safeHtml"></span></p>
+                    <p><span [innerHtml] = "question.question | safeHtml"></span></p>
+                </div>   
+                <ng-container *ngFor="let answer of question.answers">
+                    <div class="grid">
+                        <button class="outline"
+                        (click)="checkCorrectAnswer(question, answer)" 
+                        [style.background-color]="answer.color">
+                        <span [innerHtml] = "answer.answer | safeHtml"></span>
+                        </button>
+                    </div>
+                </ng-container>
+            </ng-container>    
+        </main>
+    </div>
+    <div class="grid" style="text-align: center;">
+        <button class="outline" (click)="newQuestions()">
+            New Questions
+        </button>
+        <button class="outline" (click)="themeToggle()">
+            Switch Theme
+        </button>
+    </div>
+    <ng-template #loading>
+        <mat-spinner style="margin: auto;"></mat-spinner>
+    </ng-template>
+    <app-footer></app-footer>
+</article>
 
 

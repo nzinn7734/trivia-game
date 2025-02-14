@@ -1,11 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { QuestionService } from './Services/question.service';
 import { Subscription, take } from 'rxjs';
-import { MatGridListModule } from '@angular/material/grid-list'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
-import { SafeHtmlPipe } from './Pipes/safe-html.pipe';
 
+import { QuestionService } from './Services/question.service';
+import { SafeHtmlPipe } from './Pipes/safe-html.pipe';
 import { TriviaResponse } from './Models/trivia-response'
 import { Question } from './Models/question';
 import { Answer } from './Models/answer';
@@ -14,7 +13,7 @@ import { FooterComponent } from './footer/footer.component';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, MatGridListModule, MatProgressSpinnerModule, SafeHtmlPipe, HeaderComponent, FooterComponent],
+  imports: [CommonModule, MatProgressSpinnerModule, SafeHtmlPipe, HeaderComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [QuestionService]
@@ -24,6 +23,11 @@ export class AppComponent implements OnInit, OnDestroy {
   isLoading = true;
   questions: Question[] = [];
   correctAnswers: number = 0;
+  private theme = "dark";
+  private darkThemeCorrect = "#2c7f21";
+  private darkThemeIncorrect = "#822311"
+  private lightThemeCorrect = "lightgreen"
+  private lightThemeIncorrect = "lightcoral"
   constructor(private questionService: QuestionService) {}
 
   ngOnInit(): void {
@@ -41,13 +45,13 @@ export class AppComponent implements OnInit, OnDestroy {
   public checkCorrectAnswer(question: Question, answer: Answer) {    
     if(!question.answered && answer.isCorrect) {
       this.correctAnswers += 1;
-      answer.color = "lightgreen";
+      answer.color = this.currentThemeCorrect();
       answer.isSelected = true;
     } else if (!question.answered) {
-      answer.color = "lightcoral";
+      answer.color = this.currentThemeIncorrect();
       answer.isSelected = true;
       question.answers.filter(answer => answer.isCorrect).forEach((correctAnswer) => {
-        correctAnswer.color = "lightGreen";
+        correctAnswer.color = this.currentThemeCorrect();
         correctAnswer.isSelected = true;
       });
     }
@@ -58,6 +62,34 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.questions = [];
     this.subscriptions.push(this.questionService.getQuestions().pipe(take(1)).subscribe((response) => this.mapToQuestions(response)));
+  }
+
+  public themeToggle() {
+    let currentTheme = document.getElementsByTagName("article")[0].getAttribute("data-theme")
+    let newTheme = currentTheme === "dark" ? "light" : "dark"
+    this.theme = newTheme;
+    this.questions.forEach((question) => {
+      if(question.answered) {
+        question.answers.forEach((answer) => {
+          if(answer.isSelected) {
+            if(answer.isCorrect) {
+              answer.color = this.theme === "light" ? this.lightThemeCorrect : this.darkThemeCorrect;
+            } else {
+              answer.color = this.theme === "light" ? this.lightThemeIncorrect : this.darkThemeIncorrect;
+            }
+          }
+        })
+      }
+    })
+    document.getElementsByTagName("article")[0].setAttribute("data-theme", newTheme);
+  }
+
+  private currentThemeCorrect() {
+    return this.theme === "light" ? this.lightThemeCorrect : this.darkThemeCorrect; 
+  }
+
+  private currentThemeIncorrect() {
+    return this.theme === "light" ? this.lightThemeIncorrect : this.darkThemeIncorrect;
   }
 
   private mapToQuestions(response: TriviaResponse) {
