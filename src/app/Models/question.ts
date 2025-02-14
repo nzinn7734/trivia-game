@@ -15,5 +15,13 @@ export class Question {
         this.question = question;
         this.answered = false;
         this.answers = answers;
+        this.shuffelQuestions();
+    }
+
+    shuffelQuestions() {
+        for (let i = this.answers.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [this.answers[i], this.answers[j]] = [this.answers[j], this.answers[i]];
+        }
     }
 }
