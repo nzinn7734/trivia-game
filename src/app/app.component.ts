@@ -54,18 +54,6 @@ export class AppComponent implements OnInit, OnDestroy {
     question.answered = true;
   }
 
-  public mouseEnter(answer: Answer) {
-    if(!answer.isSelected) {
-      answer.color = "lightblue";
-    }
-  }
-
-  public mouseLeave(answer: Answer) {
-    if(!answer.isSelected) {
-      answer.color = "white";
-    }
-  }
-
   public newQuestions() {
     this.isLoading = true;
     this.questions = [];

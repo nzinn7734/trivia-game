@@ -8,6 +8,6 @@ export class Answer {
         this.isCorrect = isCorrect;
         this.isSelected = false;
         this.answer = answer;
-        this.color = "white";
+        this.color = "";
     }
 }

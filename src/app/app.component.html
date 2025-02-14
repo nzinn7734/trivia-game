@@ -3,39 +3,34 @@
     Questions answered correctly: {{ correctAnswers }}
 </div>
 <div *ngIf="!isLoading; else loading">
-    <ng-container *ngFor="let question of questions">
-        <mat-grid-list cols="2" rowHeight="3:1">
-            <ng-container>
-                <mat-grid-tile class="slight-border text-center" colspan ="2" >
-                    <div>
-                        <!-- <p>Type: <span [innerHtml] = "question.type | safeHtml"></span></p>
-                        <p>Difficulty: <span [innerHtml] = "question.difficulty | safeHtml"></span></p>
-                        <p>Category: <span [innerHtml] = "question.category | safeHtml"></span></p> -->
-                        <p><span [innerHtml] = "question.question | safeHtml"></span></p>
-                    </div>
-                </mat-grid-tile>
-            </ng-container>
+    <main class="container">
+        <ng-container *ngFor="let question of questions">
+            <div style="text-align: center;">
+                <p>Type: <span [innerHtml] = "question.type | safeHtml"></span></p>
+                <p>Difficulty: <span [innerHtml] = "question.difficulty | safeHtml"></span></p>
+                <p>Category: <span [innerHtml] = "question.category | safeHtml"></span></p>
+                <p><span [innerHtml] = "question.question | safeHtml"></span></p>
+            </div>   
             <ng-container *ngFor="let answer of question.answers">
-                <div>
-                <mat-grid-tile class="slight-border text-center" 
+                <div class="grid">
+                    <button class="outline"
                     (click)="checkCorrectAnswer(question, answer)" 
-                    (mouseenter)="mouseEnter(answer)" 
-                    (mouseleave)="mouseLeave(answer)" 
-                    [style.background-color]="answer.color" 
-                    colspan ="1">
+                    [style.background-color]="answer.color">
                     <span [innerHtml] = "answer.answer | safeHtml"></span>
-                 </mat-grid-tile>
-                 </div>
+                    </button>
+                </div>
             </ng-container>
-        </mat-grid-list>
-    </ng-container>
+        </ng-container>
+        <div style="text-align: center;">
+            <button class="outline" (click)="newQuestions()">
+                New Questions
+            </button>
+        </div>    
+    </main>
 </div>
 <ng-template #loading>
     <mat-spinner style="margin: auto;"></mat-spinner>
 </ng-template>
-<div class="text-center">
-    <button (click)="newQuestions()">New Questions</button>
-</div>
 <app-footer></app-footer>
 
 
