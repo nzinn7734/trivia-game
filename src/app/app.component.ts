@@ -65,7 +65,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public themeToggle() {
-    let currentTheme = document.getElementsByTagName("article")[0].getAttribute("data-theme")
+    let currentTheme = document.getElementById("root")?.getAttribute("data-theme")
     let newTheme = currentTheme === "dark" ? "light" : "dark"
     this.theme = newTheme;
     this.questions.forEach((question) => {
@@ -81,7 +81,7 @@ export class AppComponent implements OnInit, OnDestroy {
         })
       }
     })
-    document.getElementsByTagName("article")[0].setAttribute("data-theme", newTheme);
+    document.getElementById("root")?.setAttribute("data-theme", newTheme);
   }
 
   private currentThemeCorrect() {
