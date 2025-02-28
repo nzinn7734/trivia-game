@@ -1,14 +1,14 @@
-<article data-theme="dark">
-    <app-header></app-header>
-    <section>
-        <div class="container" style="text-align: center;">
-            Questions answered correctly: {{ correctAnswers }}
-        </div>
-    </section>
-    <section>
-        <div *ngIf="!isLoading; else loading">
-            <main class="container">
-                <ng-container *ngFor="let question of questions; index as i">
+<app-header></app-header>
+<section>
+    <div class="container" style="text-align: center;">
+        Questions answered correctly: {{ correctAnswers }}
+    </div>
+</section>
+<section>
+    <div *ngIf="!isLoading; else loading">
+        <main class="container">
+            <ng-container *ngFor="let question of questions; index as i">
+                <article>
                     <section>
                         <div style="text-align: center;" class="questions">
                             <p>Question: {{ i+1 }}</p>
@@ -29,26 +29,27 @@
                             </div>
                         </section>
                     </ng-container>
-                </ng-container>    
-            </main>
+                </article>
+            </ng-container>    
+        </main>
+    </div>
+</section>
+<section>
+    <div class="container">
+        <div class="grid" style="text-align: center;">
+            <button class="outline" (click)="newQuestions()">
+                New Questions
+            </button>
+            <button class="outline" (click)="themeToggle()">
+                Switch Theme
+            </button>
         </div>
-    </section>
-    <section>
-        <div class="container">
-            <div class="grid" style="text-align: center;">
-                <button class="outline" (click)="newQuestions()">
-                    New Questions
-                </button>
-                <button class="outline" (click)="themeToggle()">
-                    Switch Theme
-                </button>
-            </div>
-        </div>
-    </section>    
-    <ng-template #loading>
-        <mat-spinner style="margin: auto;"></mat-spinner>
-    </ng-template>
-    <app-footer></app-footer>
-</article>
+    </div>
+</section>    
+<ng-template #loading>
+    <mat-spinner style="margin: auto;"></mat-spinner>
+</ng-template>
+<app-footer></app-footer>
+
 
 
