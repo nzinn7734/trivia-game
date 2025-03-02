@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subscription, take } from 'rxjs';
+import { Observable, Subscription, take } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 
 import { QuestionService } from './Services/question.service';
@@ -10,6 +10,7 @@ import { Question } from './Models/question';
 import { Answer } from './Models/answer';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { TriviaCategoriesResponse } from './Models/trivia-categories';
 
 @Component({
   selector: 'app-root',
@@ -20,9 +21,11 @@ import { FooterComponent } from './footer/footer.component';
 })
 export class AppComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = []
+  newQuestionDisabled = false;
   isLoading = true;
   questions: Question[] = [];
   correctAnswers: number = 0;
+  categories$: Observable<TriviaCategoriesResponse> | undefined
   private theme = "dark";
   private darkThemeCorrect = "#2c7f21";
   private darkThemeIncorrect = "#822311"
@@ -32,6 +35,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.newQuestions()
+    this.categories$ = this.questionService.getCategories()
   }
 
   ngOnDestroy(): void {
@@ -59,6 +63,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public newQuestions() {
+    this.newQuestionDisabled = true;
+    setTimeout(() => this.newQuestionDisabled = false, 5000);
     this.isLoading = true;
     this.questions = [];
     this.subscriptions.push(this.questionService.getQuestions().pipe(take(1)).subscribe((response) => this.mapToQuestions(response)));
