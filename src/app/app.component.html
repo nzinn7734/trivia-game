@@ -2,6 +2,7 @@
 <section>
     <div class="container" style="text-align: center;">
         Questions answered correctly: {{ correctAnswers }}
+        Categories : {{ categories$ | async | json }}
     </div>
 </section>
 <section>
@@ -37,7 +38,7 @@
 <section>
     <div class="container">
         <div class="grid" style="text-align: center;">
-            <button class="outline" (click)="newQuestions()">
+            <button class="outline" [disabled]="newQuestionDisabled" (click)="newQuestions()">
                 New Questions
             </button>
             <button class="outline" (click)="themeToggle()">
