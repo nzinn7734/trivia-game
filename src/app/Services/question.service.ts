@@ -1,9 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, first, of, map, tap, mergeMap } from 'rxjs';
+import { Observable, map, tap, mergeMap, toArray } from 'rxjs';
 import { TriviaResponse } from '../Models/trivia-response';
 import { TriviaCategoriesResponse } from '../Models/trivia-categories';
 import { TokenResponse } from '../Models/token-response';
+import { Question } from '../Models/question';
+import { Result } from '../Models/result';
+import { Answer } from '../Models/answer';
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +23,23 @@ export class QuestionService {
   private triviaApiUrl: string = this.baseTriviaUrl.concat("api.php");
   private numberOfQuestions: string = "4";
 
-  getQuestions(): Observable<TriviaResponse> {
+  getQuestionsObservable(): Observable<Question[]> {
+    return this.getQuestions().pipe(
+      map((response) => response.results),
+      mergeMap(results => results),
+      map(result => this.newQuestion(result)),
+      toArray())
+  }
+
+  getCategories(): Observable<TriviaCategoriesResponse> {
+    return this.http.get<TriviaCategoriesResponse>(this.triviaCategoriesUrl);
+  }
+
+  private getQuestions(): Observable<TriviaResponse> {
     const queryParams = new HttpParams().set('amount', this.numberOfQuestions);
     if(this.sessionToken === undefined) {
       return this.getTriviaSessionToken().pipe(
-          mergeMap((tokenResponse) => 
+        mergeMap((tokenResponse) => 
             this.http.get<TriviaResponse>(this.triviaApiUrl, {params: queryParams.set('token', tokenResponse.token)})
         )
       )
@@ -34,8 +49,23 @@ export class QuestionService {
     }   
   }
 
-  getCategories(): Observable<TriviaCategoriesResponse> {
-    return this.http.get<TriviaCategoriesResponse>(this.triviaCategoriesUrl);
+  private newQuestion(result: Result): Question {
+    return new Question(
+      result.type,
+      result.difficulty,
+      result.category,
+      result.question,
+      this.newAnswers(result.correct_answer, result.incorrect_answers)
+    )
+  }
+
+  private newAnswers(correctAnswer: string, incorrectAnswers: string[]): Answer[] {
+    let answers: Answer[] = [];
+    answers.push(new Answer(true, correctAnswer));
+    incorrectAnswers.forEach((answer) => {
+      answers.push(new Answer(false, answer));
+    })
+    return answers;
   }
 
   private getTriviaSessionToken(): Observable<TokenResponse> {

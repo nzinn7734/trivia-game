@@ -6,12 +6,12 @@
     </div>
 </section>
 <section>
-    <div *ngIf="!isLoading; else loading">
+    <div *ngIf="questions$ | async as questions; else loading">
         <main class="container">
             <ng-container *ngFor="let question of questions; index as i">
                 <article>
                     <section>
-                        <div style="text-align: center;" class="questions">
+                        <div style="text-align: center;" class="question">
                             <p>Question: {{ i+1 }}</p>
                             <p>Type: <span [innerHtml] = "question.type | safeHtml"></span></p>
                             <p>Difficulty: <span [innerHtml] = "question.difficulty | safeHtml"></span></p>
@@ -22,9 +22,10 @@
                     <ng-container *ngFor="let answer of question.answers">
                         <section>
                             <div class="grid">
-                                <button class="outline"
+                                <button
                                 (click)="checkCorrectAnswer(question, answer)" 
-                                [style.background-color]="answer.color">
+                                [style.background-color]="answer.color"
+                                [class]="answer.class">
                                 <span [innerHtml] = "answer.answer | safeHtml"></span>
                                 </button>
                             </div>
