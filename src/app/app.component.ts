@@ -66,27 +66,14 @@ export class AppComponent implements OnInit {
     let currentTheme = document.getElementById("root")?.getAttribute("data-theme")
     let newTheme = currentTheme === "dark" ? "light" : "dark"
     this.theme = newTheme;
-    let correctAnswers = document.getElementsByClassName("correct");
-    let incorrectAnswers = document.getElementsByClassName("incorrect");
-    // for(var i = 0; i < correctAnswers.length; i++) {
-    //   correctAnswers[i].setAttribute("style", "background-color:"+this.currentThemeCorrect)
-    // }
-    // for(var i = 0; i < incorrectAnswers.length; i++) {
-    //   incorrectAnswers[i].setAttribute("style", "background-color:"+this.currentThemeIncorrect)
-    // }
-    // this.questions.forEach((question) => {
-    //   if(question.answered) {
-    //     question.answers.forEach((answer) => {
-    //       if(answer.isSelected) {
-    //         if(answer.isCorrect) {
-    //           answer.color = this.theme === "light" ? this.lightThemeCorrect : this.darkThemeCorrect;
-    //         } else {
-    //           answer.color = this.theme === "light" ? this.lightThemeIncorrect : this.darkThemeIncorrect;
-    //         }
-    //       }
-    //     })
-    //   }
-    // })
+    let correctAnswers = document.getElementsByClassName("outline correct");
+    let incorrectAnswers = document.getElementsByClassName("outline incorrect");
+    for(var i = 0; i < correctAnswers.length; i++) {
+      correctAnswers[i].setAttribute("style", "background-color:"+this.currentThemeCorrect())
+    }
+    for(var i = 0; i < incorrectAnswers.length; i++) {
+      incorrectAnswers[i].setAttribute("style", "background-color:"+this.currentThemeIncorrect())
+    }
     document.getElementById("root")?.setAttribute("data-theme", newTheme);
   }
 
