@@ -20,7 +20,6 @@ export class QuestionsComponent implements OnInit {
   newQuestionDisabled = false;
   questions: Question[] = [];
   correctAnswers: number = 0;
-  categories$: Observable<TriviaCategoriesResponse> | undefined;
   private theme = "dark";
   private darkThemeCorrect = "#2c7f21";
   private darkThemeIncorrect = "#822311";
@@ -31,7 +30,6 @@ export class QuestionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.newQuestions()
-    this.categories$ = this.questionService.getCategories()
   }
 
   public checkCorrectAnswer(question: Question, answer: Answer) {    

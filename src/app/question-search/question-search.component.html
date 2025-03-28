@@ -1,6 +1,11 @@
 <section>
-    <div class="container" style="text-align: center;">
-        <p>question-search works!</p>
-        <a class="button outline" routerLink="/questions">Search</a>
+    <div class="container" style="text-align: center;" *ngIf="categories$ | async as categories; else loading">
+        Categories : {{ categories$ | async | json }}
     </div>
+    <div class="container" style="text-align: center;">
+        <button class="outline" routerLink="/questions">Search</button>
+    </div>
+    <ng-template #loading>
+        <mat-spinner style="margin: auto;"></mat-spinner>
+    </ng-template>
 </section>
