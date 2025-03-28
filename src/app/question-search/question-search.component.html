@@ -3,7 +3,7 @@
         Categories : {{ categories$ | async | json }}
     </div>
     <div class="container" style="text-align: center;">
-        <button class="outline" routerLink="/questions">Search</button>
+        <button class="outline" (click)="search()">Search</button>
     </div>
     <ng-template #loading>
         <mat-spinner style="margin: auto;"></mat-spinner>

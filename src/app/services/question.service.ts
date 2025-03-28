@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, WritableSignal } from '@angular/core';
 import { Observable, map, tap, mergeMap, toArray } from 'rxjs';
 import { TriviaResponse } from '../models/trivia-response';
 import { TriviaCategoriesResponse } from '../models/trivia-categories';
@@ -7,6 +7,8 @@ import { TokenResponse } from '../models/token-response';
 import { Question } from '../models/question';
 import { Result } from '../models/result';
 import { Answer } from '../models/answer';
+import { QuestionCriteriaDataService } from './question-criteria-data.service';
+import { QuestionCriteria } from '../models/question-criteria';
 
 @Injectable({
   providedIn: 'root'
@@ -14,14 +16,18 @@ import { Answer } from '../models/answer';
 
 export class QuestionService {
 
-  constructor(private http: HttpClient) { }
-
   private sessionToken: string;
   private baseTriviaUrl: string = "https://opentdb.com/";
   private triviaCategoriesUrl: string = this.baseTriviaUrl.concat("api_category.php");
   private triviaTokenUrl: string = this.baseTriviaUrl.concat("api_token.php");
   private triviaApiUrl: string = this.baseTriviaUrl.concat("api.php");
-  private numberOfQuestions: string = "4";
+  private questionData: WritableSignal<QuestionCriteria>;
+  private numberOfQuestions: string = '4'
+
+  constructor(private http: HttpClient, private questionCriteriaDataService: QuestionCriteriaDataService) { 
+    this.questionData = this.questionCriteriaDataService.getQuestionCriteria();
+  }
+
 
   getQuestionsObservable(): Observable<Question[]> {
     return this.getQuestions().pipe(
@@ -36,6 +42,7 @@ export class QuestionService {
   }
 
   private getQuestions(): Observable<TriviaResponse> {
+    this.numberOfQuestions = this.questionData().amount
     const queryParams = new HttpParams().set('amount', this.numberOfQuestions);
     if(this.sessionToken === undefined) {
       return this.getTriviaSessionToken().pipe(
