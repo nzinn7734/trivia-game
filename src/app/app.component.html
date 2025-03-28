@@ -1,56 +1,5 @@
 <app-header></app-header>
-<section>
-    <div class="container" style="text-align: center;">
-        Questions answered correctly: {{ correctAnswers }}
-        Categories : {{ categories$ | async | json }}
-    </div>
-</section>
-<section>
-    <div *ngIf="questions$ | async as questions; else loading">
-        <main class="container">
-            <ng-container *ngFor="let question of questions; index as i">
-                <article>
-                    <section>
-                        <div style="text-align: center;" class="question">
-                            <p>Question: {{ i+1 }}</p>
-                            <p>Type: <span [innerHtml] = "question.type | safeHtml"></span></p>
-                            <p>Difficulty: <span [innerHtml] = "question.difficulty | safeHtml"></span></p>
-                            <p>Category: <span [innerHtml] = "question.category | safeHtml"></span></p>
-                            <p><span [innerHtml] = "question.question | safeHtml"></span></p>
-                        </div> 
-                    </section>  
-                    <ng-container *ngFor="let answer of question.answers">
-                        <section>
-                            <div class="grid">
-                                <button
-                                (click)="checkCorrectAnswer(question, answer)" 
-                                [style.background-color]="answer.color"
-                                [class]="answer.class">
-                                <span [innerHtml] = "answer.answer | safeHtml"></span>
-                                </button>
-                            </div>
-                        </section>
-                    </ng-container>
-                </article>
-            </ng-container>    
-        </main>
-    </div>
-</section>
-<section>
-    <div class="container">
-        <div class="grid" style="text-align: center;">
-            <button class="outline" [disabled]="newQuestionDisabled" (click)="newQuestions()">
-                New Questions
-            </button>
-            <button class="outline" (click)="themeToggle()">
-                Switch Theme
-            </button>
-        </div>
-    </div>
-</section>    
-<ng-template #loading>
-    <mat-spinner style="margin: auto;"></mat-spinner>
-</ng-template>
+<router-outlet></router-outlet>
 <app-footer></app-footer>
 
 

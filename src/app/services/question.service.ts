@@ -1,12 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map, tap, mergeMap, toArray } from 'rxjs';
-import { TriviaResponse } from '../Models/trivia-response';
-import { TriviaCategoriesResponse } from '../Models/trivia-categories';
-import { TokenResponse } from '../Models/token-response';
-import { Question } from '../Models/question';
-import { Result } from '../Models/result';
-import { Answer } from '../Models/answer';
+import { TriviaResponse } from '../models/trivia-response';
+import { TriviaCategoriesResponse } from '../models/trivia-categories';
+import { TokenResponse } from '../models/token-response';
+import { Question } from '../models/question';
+import { Result } from '../models/result';
+import { Answer } from '../models/answer';
 
 @Injectable({
   providedIn: 'root'
