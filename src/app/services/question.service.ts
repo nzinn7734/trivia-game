@@ -1,12 +1,15 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, WritableSignal } from '@angular/core';
 import { Observable, map, tap, mergeMap, toArray } from 'rxjs';
-import { TriviaResponse } from '../Models/trivia-response';
-import { TriviaCategoriesResponse } from '../Models/trivia-categories';
-import { TokenResponse } from '../Models/token-response';
-import { Question } from '../Models/question';
-import { Result } from '../Models/result';
-import { Answer } from '../Models/answer';
+import { TriviaResponse } from '../models/trivia-response';
+import { TriviaCategoriesResponse } from '../models/trivia-categories';
+import { TokenResponse } from '../models/token-response';
+import { Question } from '../models/question';
+import { Result } from '../models/result';
+import { Answer } from '../models/answer';
+import { QuestionCriteriaDataService } from './question-criteria-data.service';
+import { QuestionCriteria } from '../models/question-criteria';
+import { query } from '@angular/animations';
 
 @Injectable({
   providedIn: 'root'
@@ -14,14 +17,17 @@ import { Answer } from '../Models/answer';
 
 export class QuestionService {
 
-  constructor(private http: HttpClient) { }
-
   private sessionToken: string;
   private baseTriviaUrl: string = "https://opentdb.com/";
   private triviaCategoriesUrl: string = this.baseTriviaUrl.concat("api_category.php");
   private triviaTokenUrl: string = this.baseTriviaUrl.concat("api_token.php");
   private triviaApiUrl: string = this.baseTriviaUrl.concat("api.php");
-  private numberOfQuestions: string = "4";
+  private questionData: WritableSignal<QuestionCriteria>;
+  private numberOfQuestions: string = '4'
+
+  constructor(private http: HttpClient, private questionCriteriaDataService: QuestionCriteriaDataService) { 
+    this.questionData = this.questionCriteriaDataService.getQuestionCriteria();
+  }
 
   getQuestionsObservable(): Observable<Question[]> {
     return this.getQuestions().pipe(
@@ -36,16 +42,15 @@ export class QuestionService {
   }
 
   private getQuestions(): Observable<TriviaResponse> {
-    const queryParams = new HttpParams().set('amount', this.numberOfQuestions);
+    const queryParams = this.setParams()
     if(this.sessionToken === undefined) {
       return this.getTriviaSessionToken().pipe(
         mergeMap((tokenResponse) => 
-            this.http.get<TriviaResponse>(this.triviaApiUrl, {params: queryParams.set('token', tokenResponse.token)})
+            this.http.get<TriviaResponse>(this.triviaApiUrl, {params: queryParams.append('token', tokenResponse.token)})
         )
       )
     } else {
-      queryParams.set('token', this.sessionToken)
-      return this.http.get<TriviaResponse>(this.triviaApiUrl, {params: queryParams});
+      return this.http.get<TriviaResponse>(this.triviaApiUrl, {params: queryParams.append('token', this.sessionToken)});
     }   
   }
 
@@ -73,5 +78,28 @@ export class QuestionService {
     return this.http.get<TokenResponse>(this.triviaTokenUrl, {params: queryParams}).pipe(
       tap((response) => this.sessionToken = response.token),
     )
+  }
+
+  private setParams(): HttpParams {
+    var queryParams = new HttpParams()
+
+    if(this.questionData().amount != '') {
+      queryParams = queryParams.append('amount', this.questionData().amount)
+    } else {
+      queryParams = queryParams.append('amount', this.numberOfQuestions)
+    }
+
+    if(this.questionData().category != 0) {
+      queryParams = queryParams.append('category', this.questionData().category)
+    }
+
+    if(this.questionData().difficulty != '') {
+      queryParams = queryParams.append('difficulty', this.questionData().difficulty)
+    }
+
+    if(this.questionData().type != '') {
+      queryParams = queryParams.append('type', this.questionData().type)
+    }
+    return queryParams;
   }
 }
