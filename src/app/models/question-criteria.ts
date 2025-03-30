@@ -1,6 +1,6 @@
 export class QuestionCriteria {
     private _amount: string
-    private _category?: string
+    private _category?: number
     private _difficulty?: string
     private _type?: string
 
@@ -17,11 +17,11 @@ export class QuestionCriteria {
     }
 
     public get category() {
-        return this._category === undefined ? '' : this._category;
+        return this._category === undefined ? 0 : this._category
     }
 
-    public set category(category: string) {
-        this._category = this.category;
+    public set category(category: number) {
+        this._category = category;
     }
 
     public get difficulty() {
@@ -29,7 +29,7 @@ export class QuestionCriteria {
     }
 
     public set difficulty(difficulty: string) {
-        this._difficulty = this.difficulty;
+        this._difficulty = difficulty;
     }
 
     public get type() {

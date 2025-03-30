@@ -9,6 +9,7 @@ import { Result } from '../models/result';
 import { Answer } from '../models/answer';
 import { QuestionCriteriaDataService } from './question-criteria-data.service';
 import { QuestionCriteria } from '../models/question-criteria';
+import { query } from '@angular/animations';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,6 @@ export class QuestionService {
     this.questionData = this.questionCriteriaDataService.getQuestionCriteria();
   }
 
-
   getQuestionsObservable(): Observable<Question[]> {
     return this.getQuestions().pipe(
       map((response) => response.results),
@@ -42,17 +42,15 @@ export class QuestionService {
   }
 
   private getQuestions(): Observable<TriviaResponse> {
-    this.numberOfQuestions = this.questionData().amount
-    const queryParams = new HttpParams().set('amount', this.numberOfQuestions);
+    const queryParams = this.setParams()
     if(this.sessionToken === undefined) {
       return this.getTriviaSessionToken().pipe(
         mergeMap((tokenResponse) => 
-            this.http.get<TriviaResponse>(this.triviaApiUrl, {params: queryParams.set('token', tokenResponse.token)})
+            this.http.get<TriviaResponse>(this.triviaApiUrl, {params: queryParams.append('token', tokenResponse.token)})
         )
       )
     } else {
-      queryParams.set('token', this.sessionToken)
-      return this.http.get<TriviaResponse>(this.triviaApiUrl, {params: queryParams});
+      return this.http.get<TriviaResponse>(this.triviaApiUrl, {params: queryParams.append('token', this.sessionToken)});
     }   
   }
 
@@ -80,5 +78,28 @@ export class QuestionService {
     return this.http.get<TokenResponse>(this.triviaTokenUrl, {params: queryParams}).pipe(
       tap((response) => this.sessionToken = response.token),
     )
+  }
+
+  private setParams(): HttpParams {
+    var queryParams = new HttpParams()
+
+    if(this.questionData().amount != '') {
+      queryParams = queryParams.append('amount', this.questionData().amount)
+    } else {
+      queryParams = queryParams.append('amount', this.numberOfQuestions)
+    }
+
+    if(this.questionData().category != 0) {
+      queryParams = queryParams.append('category', this.questionData().category)
+    }
+
+    if(this.questionData().difficulty != '') {
+      queryParams = queryParams.append('difficulty', this.questionData().difficulty)
+    }
+
+    if(this.questionData().type != '') {
+      queryParams = queryParams.append('type', this.questionData().type)
+    }
+    return queryParams;
   }
 }

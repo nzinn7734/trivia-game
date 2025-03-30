@@ -26,7 +26,7 @@ export class QuestionSearchComponent implements OnInit {
 
   categories$: Observable<TriviaCategoriesResponse> | undefined;
   questionSearchForm: FormGroup<QuestionSearchForm>
-  questionDate: QuestionCriteria | undefined
+  questionData: QuestionCriteria | undefined
   difficulties = [
     {
       value: '',
@@ -64,15 +64,19 @@ export class QuestionSearchComponent implements OnInit {
     this.categories$ = this.questionService.getCategories();
     this.questionSearchForm = new FormGroup<QuestionSearchForm>({
       amount: new FormControl('',  {nonNullable: true}),
-      category: new FormControl('', {nonNullable: true}),
+      category: new FormControl(0, {nonNullable: true}),
       difficulty: new FormControl('', {nonNullable: true}),
       type: new FormControl('', {nonNullable: true})
     });
   }
 
   public search() {
-    this.questionDate = new QuestionCriteria('5');
-    this.questionCriteriaDataService.setQuestionCriteria(this.questionDate);
+    this.questionData = new QuestionCriteria('5');
+    this.questionData.amount = this.questionSearchForm.value.amount ? this.questionSearchForm.value.amount:'';
+    this.questionData.category = this.questionSearchForm.value.category ? this.questionSearchForm.value.category:0;
+    this.questionData.difficulty = this.questionSearchForm.value.difficulty ? this.questionSearchForm.value.difficulty:'';
+    this.questionData.type = this.questionSearchForm.value.type ? this.questionSearchForm.value.type:'';
+    this.questionCriteriaDataService.setQuestionCriteria(this.questionData);
     this.router.navigate(['/questions'])
   }
 

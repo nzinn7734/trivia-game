@@ -6,7 +6,7 @@
                     <form [formGroup]="questionSearchForm" (ngSubmit)="search()">
                         <input type="text" formControlName="amount" placeholder="Number of questions">
                         <select formControlName="category">
-                            <option value="" selected>Any Category</option>
+                            <option value="0" selected>Any Category</option>
                             <option *ngFor="let category of categories.trivia_categories" [ngValue]="category.id">
                                 {{category.name}}
                             </option>
