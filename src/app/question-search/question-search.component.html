@@ -3,18 +3,29 @@
        <article>
             <section>
                 <div style="text-align: center;" *ngIf="categories$ | async as categories; else loading">
-                    Categories : {{ categories$ | async | json }}
+                    <form [formGroup]="questionSearchForm" (ngSubmit)="search()">
+                        <input type="text" formControlName="amount" placeholder="Number of questions">
+                        <select formControlName="category">
+                            <option value="" selected>Any Category</option>
+                            <option *ngFor="let category of categories.trivia_categories" [ngValue]="category.id">
+                                {{category.name}}
+                            </option>
+                        </select>
+                        <select formControlName="difficulty">
+                            <option *ngFor="let difficulty of difficulties" [ngValue]="difficulty.value">
+                                {{difficulty.name}}
+                            </option>
+                        </select>
+                        <select formControlName="type">
+                            <option *ngFor="let type of types" [ngValue]="type.value">
+                                {{type.name}}
+                            </option>
+                        </select>
+                        <div class="container" style="text-align: center;">
+                            <button class="outline" type="submit">Search</button>
+                        </div>
+                    </form>
                 </div>
-                <form [formGroup]="questionSearchForm" ngSubmit="search()">
-                    <select formControlName="difficulty">
-                        <option *ngFor="let element of difficulties">
-                            {{element.name}}
-                        </option>
-                    </select>
-                    <div class="container" style="text-align: center;">
-                        <button class="outline" type="submit">Search</button>
-                    </div>
-                </form>
             </section>
        </article> 
 

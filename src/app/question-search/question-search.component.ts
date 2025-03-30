@@ -45,7 +45,7 @@ export class QuestionSearchComponent implements OnInit {
       name: 'Hard'
     }
   ]
-  type = [
+  types = [
     {
       value: '',
       name: 'Any Type'
