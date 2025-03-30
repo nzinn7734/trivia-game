@@ -5,7 +5,7 @@
                 <div style="text-align: center;" *ngIf="categories$ | async as categories; else loading">
                     <form [formGroup]="questionSearchForm" (ngSubmit)="search()">
                         <input type="text" formControlName="amount" placeholder="Number of questions">
-                        <div style="text-align: left;" *ngIf="questionSearchForm.controls.amount.hasError('validNumber')">
+                        <div style="text-align: left;" *ngIf="questionSearchForm.controls.amount.hasError('invalidNumber')">
                             <section>
                                 <div>
                                     *Please enter a value between 1 and 50

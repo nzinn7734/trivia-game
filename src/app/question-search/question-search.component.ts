@@ -64,7 +64,7 @@ export class QuestionSearchComponent implements OnInit {
   ngOnInit(): void {
     this.categories$ = this.questionService.getCategories();
     this.questionSearchForm = this.fb.nonNullable.group(<QuestionSearchForm>({
-      amount: new FormControl('', [this.validNumber]),
+      amount: new FormControl('', [this.invalidNumber]),
       category: new FormControl(0),
       difficulty: new FormControl(''),
       type: new FormControl('')
@@ -81,14 +81,14 @@ export class QuestionSearchComponent implements OnInit {
     this.router.navigate(['/questions'])
   }
 
-  private validNumber(control: AbstractControl) {
+  private invalidNumber(control: AbstractControl) {
     const amount = parseInt(control.value);
     if ((amount > 0 && amount <= 50) || control.value == '') {
       return null
     }
 
     return { 
-      validNumber: true
+      invalidNumber: true
     }
 
   }
