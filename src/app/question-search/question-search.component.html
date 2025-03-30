@@ -5,6 +5,13 @@
                 <div style="text-align: center;" *ngIf="categories$ | async as categories; else loading">
                     <form [formGroup]="questionSearchForm" (ngSubmit)="search()">
                         <input type="text" formControlName="amount" placeholder="Number of questions">
+                        <div style="text-align: left;" *ngIf="questionSearchForm.controls.amount.hasError('validNumber')">
+                            <section>
+                                <div>
+                                    *Please enter a value between 1 and 50
+                                </div>
+                            </section>
+                        </div>    
                         <select formControlName="category">
                             <option value="0" selected>Any Category</option>
                             <option *ngFor="let category of categories.trivia_categories" [ngValue]="category.id">
@@ -22,7 +29,7 @@
                             </option>
                         </select>
                         <div class="container" style="text-align: center;">
-                            <button class="outline" type="submit">Search</button>
+                            <button class="outline" type="submit" [disabled]="!questionSearchForm.valid">Search</button>
                         </div>
                     </form>
                 </div>
