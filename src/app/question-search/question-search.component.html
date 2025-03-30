@@ -1,10 +1,24 @@
 <section>
-    <div class="container" style="text-align: center;" *ngIf="categories$ | async as categories; else loading">
-        Categories : {{ categories$ | async | json }}
-    </div>
-    <div class="container" style="text-align: center;">
-        <button class="outline" (click)="search()">Search</button>
-    </div>
+    <main class="container">
+       <article>
+            <section>
+                <div style="text-align: center;" *ngIf="categories$ | async as categories; else loading">
+                    Categories : {{ categories$ | async | json }}
+                </div>
+                <form [formGroup]="questionSearchForm" ngSubmit="search()">
+                    <select formControlName="difficulty">
+                        <option *ngFor="let element of difficulties">
+                            {{element.name}}
+                        </option>
+                    </select>
+                    <div class="container" style="text-align: center;">
+                        <button class="outline" type="submit">Search</button>
+                    </div>
+                </form>
+            </section>
+       </article> 
+
+    </main>
     <ng-template #loading>
         <mat-spinner style="margin: auto;"></mat-spinner>
     </ng-template>
