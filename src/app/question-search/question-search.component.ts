@@ -7,7 +7,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { QuestionCriteriaDataService } from '../services/question-criteria-data.service';
 import { QuestionCriteria } from '../models/question-criteria';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { QuestionSearchForm } from '../models/question-search-form';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
@@ -21,7 +21,8 @@ export class QuestionSearchComponent implements OnInit {
 
   constructor(private questionService: QuestionService, 
     private questionCriteriaDataService: QuestionCriteriaDataService,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder
   ) {}
 
   categories$: Observable<TriviaCategoriesResponse> | undefined;
@@ -62,12 +63,12 @@ export class QuestionSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.categories$ = this.questionService.getCategories();
-    this.questionSearchForm = new FormGroup<QuestionSearchForm>({
-      amount: new FormControl('',  {nonNullable: true}),
-      category: new FormControl(0, {nonNullable: true}),
-      difficulty: new FormControl('', {nonNullable: true}),
-      type: new FormControl('', {nonNullable: true})
-    });
+    this.questionSearchForm = this.fb.nonNullable.group(<QuestionSearchForm>({
+      amount: new FormControl('', [this.invalidNumber]),
+      category: new FormControl(0),
+      difficulty: new FormControl(''),
+      type: new FormControl('')
+    }));
   }
 
   public search() {
@@ -78,6 +79,18 @@ export class QuestionSearchComponent implements OnInit {
     this.questionData.type = this.questionSearchForm.value.type ? this.questionSearchForm.value.type:'';
     this.questionCriteriaDataService.setQuestionCriteria(this.questionData);
     this.router.navigate(['/questions'])
+  }
+
+  private invalidNumber(control: AbstractControl) {
+    const amount = parseInt(control.value);
+    if ((amount > 0 && amount <= 50) || control.value == '') {
+      return null
+    }
+
+    return { 
+      invalidNumber: true
+    }
+
   }
 
 }
