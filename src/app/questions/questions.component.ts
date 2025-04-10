@@ -5,8 +5,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
 import { Observable } from 'rxjs';
 import { Question } from '../models/question';
-import { TriviaCategoriesResponse } from '../models/trivia-categories';
 import { Answer } from '../models/answer';
+import { LIGHT_THEME_CORRECT, 
+  LIGHT_THEME_INCORRECT, 
+  DARK_THEME_CORRECT, 
+  DARK_THEME_INCORRECT,
+  LIGHT,
+  DARK
+} from '../constants/theme';
 
 @Component({
   selector: 'app-questions',
@@ -20,11 +26,6 @@ export class QuestionsComponent implements OnInit {
   newQuestionDisabled = false;
   questions: Question[] = [];
   correctAnswers: number = 0;
-  private theme = "dark";
-  private darkThemeCorrect = "#2c7f21";
-  private darkThemeIncorrect = "#822311";
-  private lightThemeCorrect = "lightgreen";
-  private lightThemeIncorrect = "lightcoral";
 
   constructor(private questionService: QuestionService) {}
 
@@ -57,26 +58,11 @@ export class QuestionsComponent implements OnInit {
     setTimeout(() => this.newQuestionDisabled = false, 5000);
   }
 
-  public themeToggle() {
-    let currentTheme = document.getElementById("root")?.getAttribute("data-theme")
-    let newTheme = currentTheme === "dark" ? "light" : "dark"
-    this.theme = newTheme;
-    let correctAnswers = document.getElementsByClassName("outline correct");
-    let incorrectAnswers = document.getElementsByClassName("outline incorrect");
-    for(var i = 0; i < correctAnswers.length; i++) {
-      correctAnswers[i].setAttribute("style", "background-color:"+this.currentThemeCorrect())
-    }
-    for(var i = 0; i < incorrectAnswers.length; i++) {
-      incorrectAnswers[i].setAttribute("style", "background-color:"+this.currentThemeIncorrect())
-    }
-    document.getElementById("root")?.setAttribute("data-theme", newTheme);
-  }
-
   private currentThemeCorrect() {
-    return this.theme === "light" ? this.lightThemeCorrect : this.darkThemeCorrect; 
+    return document.getElementById("root")?.getAttribute("data-theme") === LIGHT ? LIGHT_THEME_CORRECT : DARK_THEME_CORRECT; 
   }
 
   private currentThemeIncorrect() {
-    return this.theme === "light" ? this.lightThemeIncorrect : this.darkThemeIncorrect;
+    return document.getElementById("root")?.getAttribute("data-theme") === LIGHT ? LIGHT_THEME_INCORRECT : DARK_THEME_INCORRECT;
   }
 }

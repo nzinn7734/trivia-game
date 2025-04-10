@@ -4,19 +4,15 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { RouterModule, RouterOutlet } from '@angular/router';
+import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, HeaderComponent, FooterComponent, RouterOutlet, RouterModule],
+  imports: [CommonModule, HeaderComponent, FooterComponent, RouterOutlet, RouterModule, ThemeToggleComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  private theme = "dark";
-  private darkThemeCorrect = "#2c7f21";
-  private darkThemeIncorrect = "#822311";
-  private lightThemeCorrect = "lightgreen";
-  private lightThemeIncorrect = "lightcoral";
 
   constructor() {}
 
