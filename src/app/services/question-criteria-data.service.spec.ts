@@ -5,8 +5,10 @@ import { QuestionCriteriaDataService } from './question-criteria-data.service';
 describe('QuestionCriteriaDataService', () => {
   let service: QuestionCriteriaDataService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
+  beforeEach(async() => {
+    await TestBed.configureTestingModule({})
+    .compileComponents();
+    
     service = TestBed.inject(QuestionCriteriaDataService);
   });
 

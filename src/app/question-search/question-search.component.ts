@@ -15,7 +15,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
   selector: 'app-question-search',
   imports: [RouterModule, MatProgressSpinnerModule, CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './question-search.component.html',
-  styleUrl: './question-search.component.css'
 })
 export class QuestionSearchComponent implements OnInit {
 
