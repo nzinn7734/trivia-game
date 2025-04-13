@@ -11,14 +11,12 @@ import { LIGHT_THEME_CORRECT,
   DARK_THEME_CORRECT, 
   DARK_THEME_INCORRECT,
   LIGHT,
-  DARK
 } from '../constants/theme';
 
 @Component({
   selector: 'app-questions',
   imports: [CommonModule, MatProgressSpinnerModule, SafeHtmlPipe],
   templateUrl: './questions.component.html',
-  styleUrl: './questions.component.css',
   providers: [QuestionService]
 })
 export class QuestionsComponent implements OnInit {

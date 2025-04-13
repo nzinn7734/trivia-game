@@ -10,7 +10,6 @@ import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
   selector: 'app-root',
   imports: [CommonModule, HeaderComponent, FooterComponent, RouterOutlet, RouterModule, ThemeToggleComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
 
