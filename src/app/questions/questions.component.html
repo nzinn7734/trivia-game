@@ -4,20 +4,20 @@
     </div>
 </section>
 <section>
-    <div *ngIf="questions$ | async as questions; else loading">
+    @if(questions$ | async; as questions) {
         <main class="container">
-            <ng-container *ngFor="let question of questions; index as i">
+            @for(question of questions; let i = $index; track i) {
                 <article>
                     <section>
                         <div style="text-align: center;" class="question">
-                            <p>Question: {{ i+1 }}</p>
+                            <p>Question: {{ i + 1 }}</p>
                             <p>Type: <span [innerHtml] = "question.type | safeHtml"></span></p>
                             <p>Difficulty: <span [innerHtml] = "question.difficulty | safeHtml"></span></p>
                             <p>Category: <span [innerHtml] = "question.category | safeHtml"></span></p>
                             <p><span [innerHtml] = "question.question | safeHtml"></span></p>
                         </div> 
                     </section>  
-                    <ng-container *ngFor="let answer of question.answers">
+                    @for(answer of question.answers; track answer) {
                         <section>
                             <div class="grid">
                                 <button
@@ -28,11 +28,13 @@
                                 </button>
                             </div>
                         </section>
-                    </ng-container>
-                </article>
-            </ng-container>    
+                    }
+                </article> 
+            }   
         </main>
-    </div>
+    } @else {
+        <mat-spinner style="margin: auto;"></mat-spinner>
+    }
 </section>
 <section>
     <div class="container">
@@ -43,6 +45,3 @@
         </div>
     </div>
 </section>    
-<ng-template #loading>
-    <mat-spinner style="margin: auto;"></mat-spinner>
-</ng-template>
