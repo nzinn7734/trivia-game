@@ -2,7 +2,7 @@
     <main class="container">
        <article>
             <section>
-                <div style="text-align: center;" *ngIf="categories$ | async as categories; else loading">
+                @if(categories$ | async; as categories) {
                     <form [formGroup]="questionSearchForm" (ngSubmit)="search()">
                         <input type="text" formControlName="amount" placeholder="Number of questions">
                         <div style="text-align: left;" *ngIf="questionSearchForm.controls.amount.hasError('invalidNumber')">
@@ -32,12 +32,10 @@
                             <button class="outline" type="submit" [disabled]="!questionSearchForm.valid">Search</button>
                         </div>
                     </form>
-                </div>
+            } @else {
+                <mat-spinner style="margin: auto;"></mat-spinner>
+            }
             </section>
        </article> 
-
     </main>
-    <ng-template #loading>
-        <mat-spinner style="margin: auto;"></mat-spinner>
-    </ng-template>
 </section>
