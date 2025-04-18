@@ -9,7 +9,6 @@ import { LIGHT_THEME_CORRECT,
 
 @Component({
   selector: 'app-theme-toggle',
-  imports: [],
   templateUrl: './theme-toggle.component.html',
 })
 export class ThemeToggleComponent {
@@ -17,7 +16,7 @@ export class ThemeToggleComponent {
   private theme = document.getElementById("root")?.getAttribute("data-theme");
 
   public themeToggle() {
-    let newTheme = this.theme === "dark" ? "light" : "dark"
+    let newTheme = this.theme === DARK ? LIGHT : DARK;
     this.theme = newTheme;
     let correctAnswers = document.getElementsByClassName("outline correct");
     let incorrectAnswers = document.getElementsByClassName("outline incorrect");

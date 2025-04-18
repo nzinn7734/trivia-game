@@ -9,7 +9,6 @@ import { Result } from '../models/result';
 import { Answer } from '../models/answer';
 import { QuestionCriteriaDataService } from './question-criteria-data.service';
 import { QuestionCriteria } from '../models/question-criteria';
-import { query } from '@angular/animations';
 
 @Injectable({
   providedIn: 'root'
